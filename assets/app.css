@@ -533,13 +533,14 @@ video {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.bg-slate-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+.text-left {
+  text-align: left;
 }
-.bg-gray-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
 }
 .uppercase {
   text-transform: uppercase;
