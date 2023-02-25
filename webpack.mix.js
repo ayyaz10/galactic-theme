@@ -1,3 +1,10 @@
-let mix = require("laravel-mix");
-// mix.js('resources/js/header.js', 'public/js/header.js');
-mix.js("src/js/app.js", "assets").sass("src/scss/app.scss", "assets");
+const mix = require("laravel-mix");
+const tailwindcss = require("tailwindcss");
+
+mix
+  .js("src/js/app.js", "assets")
+  .sass("src/scss/app.scss", "assets")
+  .options({
+    processCssUrls: false,
+    postCss: [tailwindcss("tailwind.config.js")],
+  });

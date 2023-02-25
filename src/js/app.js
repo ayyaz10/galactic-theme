@@ -1,1 +1,4 @@
-alert("helo world");
+import Alpine from "alpinejs";
+window.Alpine = Alpine;
+
+Alpine.start();
