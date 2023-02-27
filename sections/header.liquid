@@ -1,6 +1,29 @@
-<header class="header">
-  <div class="header__logo">logo</div>
-  <div class="header__menu">menu</div>
+<header class="header border-y">
+  <div class="header__logo">
+    {% if section.settings.logo != blank %}
+      <a href="/" class="block border" style="max-width: {{section.settings.logo_width}}px">
+        <img src="{{section.settings.logo | img_url: width: 400 | loading: 'lazy'}}" alt="{{shop.name}}">
+      </a>
+    {% else %}
+      <a href="/">
+        {{ shop.name }}
+      </a>
+    {% endif %}
+  </div>
+  <nav class="header__menu">
+    <button class="md:hidden">
+      {% render 'icon-menu', class: 'w-10' %}
+    </button>
+    <ul class="header__menu-nav hidden md:flex">
+      {% for link in section.settings.menu.links %}
+        {% if link.links != blank %}
+          <li>
+            <a href="{{link.url}}">{{ link.title }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
   <div class="header__icons">icons</div>
 </header>
 <script type="application/ld+json">
@@ -48,6 +71,21 @@
   "name": "t:sections.header.name",
   "class": "section-header",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:settings_schema.logo.settings.logo_image.label"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Change Size",
+      "default": 100
+    },
     {
       "type": "select",
       "id": "logo_position",
