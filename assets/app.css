@@ -512,6 +512,18 @@ video {
   white-space: nowrap;
   border-width: 0;
 }
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.left-1\/2 {
+  left: 50%;
+}
+.top-16 {
+  top: 4rem;
+}
 .isolate {
   isolation: isolate;
 }
@@ -530,6 +542,16 @@ video {
 .w-10 {
   width: 2.5rem;
 }
+.min-w-\[160px\] {
+  min-width: 160px;
+}
+.-translate-x-1\/2 {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -541,6 +563,22 @@ video {
 .border-y {
   border-top-width: 1px;
   border-bottom-width: 1px;
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 .text-left {
   text-align: left;
@@ -588,6 +626,12 @@ video {
   .header {
     grid-template-areas: "header-menu header-logo header-icons";
   }
+}
+.header .nav__item:hover .nav__item-submenu {
+  display: block;
+}
+.header .nav__item .nav__item-submenu {
+  display: none;
 }
 @media (min-width: 768px) {
 

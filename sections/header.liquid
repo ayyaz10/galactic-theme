@@ -17,8 +17,31 @@
     <ul class="header__menu-nav hidden md:flex">
       {% for link in section.settings.menu.links %}
         {% if link.links != blank %}
-          <li>
+          <li class="nav__item py-5 px-4 block relative">
             <a href="{{link.url}}">{{ link.title }}</a>
+            <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
+              {% for sublink in linklists[link.handle].links %}
+                <li>
+                  <a href="{{sublink.url}}">
+                    {{ sublink.title }}
+                  </a>
+                  <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
+                    {% for subsublink in linklists[sublink.handle].links %}
+                      <li>
+                        <a href="{{sublink.url}}">
+                          {{ subsublink.title }}
+                          {{ linklists[sublink.handle].levels }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% else %}
+          <li>
+            <a href="{{link.url}}" class="nav__item py-5 px-4 block">{{ link.title }}</a>
           </li>
         {% endif %}
       {% endfor %}

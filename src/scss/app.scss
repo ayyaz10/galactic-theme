@@ -18,5 +18,17 @@
     @media (max-width: 767.99px) {
         grid-template-areas: "header-menu header-logo header-icons";
     }
+
+    // submenu
+    .nav__item {
+        &:hover {
+            .nav__item-submenu {
+                display: block;
+            }
+        }
+        .nav__item-submenu {
+            display: none;
+        }
+    }
 }
 
