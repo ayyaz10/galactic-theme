@@ -1,61 +1,116 @@
-<header class="header border-y">
-  <div class="header__logo">
-    {% if section.settings.logo != blank %}
-      <a href="/" class="block border" style="max-width: {{section.settings.logo_width}}px">
-        <img src="{{section.settings.logo | img_url: width: 400 | loading: 'lazy'}}" alt="{{shop.name}}">
-      </a>
-    {% else %}
-      <a href="/">
-        {{ shop.name }}
-      </a>
-    {% endif %}
-  </div>
-  <nav class="header__menu">
-    <button class="md:hidden">
-      {% render 'icon-menu', class: 'w-10' %}
-    </button>
-    <ul class="header__menu-nav hidden md:flex">
-      {% for link in section.settings.menu.links %}
-        {% if link.links != blank %}
-          <li class="nav__item py-5 px-4 block relative">
-            <a href="{{link.url}}">{{ link.title }}</a>
-            <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
-              {% for sublink in linklists[link.handle].links %}
-                <li>
-                  <a href="{{sublink.url}}">
-                    {{ sublink.title }}
-                  </a>
-                  <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
-                    {% for subsublink in linklists[sublink.handle].links %}
-                      <li>
-                        <a href="{{sublink.url}}">
-                          {{ subsublink.title }}
-                          {{ linklists[sublink.handle].levels }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% else %}
-          <li>
-            <a href="{{link.url}}" class="nav__item py-5 px-4 block">{{ link.title }}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </nav>
-  <div class="header__icons">icons</div>
-</header>
+<div class="border-y px-10">
+  <header class="header items-center page-width">
+    <div
+      class="header__logo mx-auto my-2 md:my-0 md:mr-auto md:ml-0"
+      style="max-width: {{ section.settings.logo_width }}px;"
+    >
+      {% if section.settings.logo != blank %}
+        <a href="/" class="header__logo">
+          {{ section.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy' }}
+        </a>
+      {% else %}
+        <a href="/" class="header__logo-title">
+          {{ shop.name }}
+        </a>
+      {% endif %}
+    </div>
+
+    <nav class="header__menu flex" x-data>
+      <button class="md:hidden" @click="$dispatch('toggle-menu')" type="button">
+        {% render 'icon-menu', class: 'w-10' %}
+      </button>
+
+      <ul class="header__menu-nav hidden md:flex">
+        {% for link in section.settings.menu.links %}
+          {% if link.links != blank %}
+            <li class="nav__item py-5 px-4 block relative">
+              <a href="{{ link.url }}">{{ link.title }}</a>
+              <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
+                {% for sublink in linklists[link.handle].links %}
+                  {% if sublink.links != blank %}
+                    <li>
+                      <a class="block py-1 hover:opacity-75 " href="{{ sublink.url }}">
+                        {{ sublink.title }}
+                      </a>
+                      <ul class="nav__item-subsubmenu absolute bg-white border py-3 px-4 min-w-[160px] top-0 -right-full ">
+                        {% for subsublink in linklists[sublink.handle].links %}
+                          <li>
+                            <a href="{{subsublink.url}}" class="">{{ subsublink.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{{sublink.url}}" class="nav__item py-2 block">{{ sublink.title }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li>
+              <a class="nav__item py-5 px-4 block" href="{{ link.url }}"> {{ link.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+    <div
+      class="header__icons flex items-center justify-end space-x-5"
+      x-data="{ cart_count: {{ cart.item_count }} }"
+      @cart-count-updated.window="cart_count = $event.detail"
+    >
+      {%- if shop.customer_accounts_enabled -%}
+        <div class="relative account-menu-wrapper z-10">
+          <a
+            href="{{ routes.account_url }}"
+            title="account link"
+            class="header__icon block text-center"
+          >
+            {% render 'icon-account', class: 'w-8 mx-auto' %}
+            <span class="">
+              {%- liquid
+                if customer
+                  echo 'customer.account_fallback' | t
+                else
+                  echo 'customer.account_fallback' | t
+                endif
+              -%}
+            </span>
+          </a>
+        </div>
+      {%- endif -%}
+
+      <button
+        type="button"
+        title="Cart button"
+        @click="$dispatch('toggle-cart')"
+        class="header__icon text-center relative px-2"
+      >
+        {% render 'icon-cart', class: 'w-10' %}
+        <span class="">{{ 'templates.cart.cart' | t }}</span>
+        <span
+          x-text="cart_count"
+          class="cart__count min-w-[22px] text-sm min-h-[22px] absolute grid place-content-center rounded-full -top-3 -right-1 text-white bg-black"
+        >
+          {{ cart.item_count }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  {% comment %} {% render 'mobile-menu' %} {% endcomment %}
+</div>
+
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": {{ shop.name | json }},
-    {% if settings.logo %}
-      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width %}
+      "logo": {{ section.settings.logo | image_url: width: image_size | prepend: "https:" | json }},
     {% endif %}
     "sameAs": [
       {{ settings.social_twitter_link | json }},
@@ -68,12 +123,12 @@
       {{ settings.social_youtube_link | json }},
       {{ settings.social_vimeo_link | json }}
     ],
-    "url": {{ request.origin | append: page.url | json }}
+    "url": {{ shop.url | append: page.url | json }}
   }
 </script>
 
 {%- if request.page_type == 'index' -%}
-  {% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}
+  {% assign potential_action_target = shop.url | append: routes.search_url | append: '?q={search_term_string}' %}
   <script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -84,7 +139,7 @@
         "target": {{ potential_action_target | json }},
         "query-input": "required name=search_term_string"
       },
-      "url": {{ request.origin | append: page.url | json }}
+      "url": {{ shop.url | append: page.url | json }}
     }
   </script>
 {%- endif -%}
