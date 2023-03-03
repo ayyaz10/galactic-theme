@@ -50,7 +50,7 @@
 
         <div class="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
           <div class="px-4 sm:px-6">
-            {% render 'search-input' %}
+            {% comment %} {% render 'search-input' %} {% endcomment %}
           </div>
           <div class="mt-6 relative flex-1 px-4 sm:px-6">
             <ul role="list" class="text-black">
@@ -96,7 +96,7 @@
                           title="Toggle menu"
                           class="w-1/2 text-right relative overflow-hidden"
                         >
-                          {% render 'icon-arrow-right', class: 'h-6 transform rotate-90 ml-auto' %}
+                          {% render 'angle-right', class: 'h-6 transform rotate-90 ml-auto' %}
                         </button>
                       </div>
 
