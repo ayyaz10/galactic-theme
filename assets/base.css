@@ -534,10 +534,10 @@ blockquote {
   text-transform: uppercase;
 }
 
-.caption-with-letter-spacing--medium {
+/* .caption-with-letter-spacing--medium {
   font-size: 1.2rem;
   letter-spacing: .16rem;
-}
+} */
 
 .caption-with-letter-spacing--large {
   font-size: 1.4rem;
